@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjx.nursing.mapper.ServiceRecordMapper" >
+    <sql id="baseSql">
+        select record_id, order_id, start_time, end_time,
+               worker_name, worker_sex, worker_age, worker_phone
+        from service_record
+    </sql>
+    <select id="listByOrderId" resultType="com.xjx.nursing.pojo.ServiceRecord" parameterType="java.lang.Long">
+        <include refid="baseSql"/>
+        where order_id  = #{orderId}
+    </select>
+
+    <select id="getTotalCountByOrderId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(record_id) from service_record where order_id = #{orderId}
+    </select>
+
+    <update id="update" parameterType="com.xjx.nursing.pojo.ServiceRecord">
+        update service_record
+        <set>
+            <if test="workerName != null">
+                worker_name = #{workerName},
+            </if>
+            <if test="workerSex != null">
+                worker_sex = #{workerSex},
+            </if>
+            <if test="workerAge != null">
+                worker_age = #{workerAge},
+            </if>
+            <if test="workerPhone != null">
+                worker_phone = #{workerPhone},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+        </set>
+        where record_id = #{recordId}
+    </update>
+
+
+    <insert id="insert" parameterType="com.xjx.nursing.pojo.ServiceRecord">
+        insert into service_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="workerName != null">
+                worker_name,
+            </if>
+            <if test="workerSex != null">
+                worker_sex,
+            </if>
+            <if test="workerAge != 0">
+                worker_age,
+            </if>
+            <if test="workerPhone != 0">
+                worker_phone,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{orderId},
+            </if>
+            <if test="workerName != null">
+                #{workerName},
+            </if>
+            <if test="workerSex != null">
+                #{workerSex},
+            </if>
+            <if test="workerAge != 0">
+                #{workerAge},
+            </if>
+            <if test="workerPhone != 0">
+                #{workerPhone},
+            </if>
+            <if test="startTime != null">
+                #{startTime},
+            </if>
+            <if test="endTime != null">
+                #{endTime},
+            </if>
+        </trim>
+
+    </insert>
+
+</mapper>

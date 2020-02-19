@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjx.nursing.mapper.CaregiverMapper" >
+    <sql id="sqlprefix">
+        select caregiver_id , caregiver_name ,  sex,  caregiver_age , service_city ,  service_district ,
+               contact_person , contact_phone ,service_place, caregiver_address , is_default , sysuser_id
+        from caregiver
+    </sql>
+    <select id="getListBySysuserId" resultType="com.xjx.nursing.pojo.Caregiver" parameterType="java.lang.Long" >
+        <include refid="sqlprefix"/>
+        where sysuser_id = #{sysuserId}
+    </select>
+    <select id="selectById" resultType="com.xjx.nursing.pojo.Caregiver" parameterType="java.lang.Long" >
+        <include refid="sqlprefix"/>
+        where caregiver_id = #{caregiverId}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="caregiverId" parameterType="com.xjx.nursing.pojo.Caregiver" >
+        insert into caregiver(caregiver_name,sex,caregiver_age,service_city,service_district,service_place,
+                              caregiver_address,contact_person,contact_phone,is_default,sysuser_id)
+        values(#{caregiverName},#{sex},#{caregiverAge},#{serviceCity},#{serviceDistrict},#{servicePlace},
+               #{caregiverAddress},#{contactPerson},#{contactPhone},#{isDefault},#{sysuserId}
+               )
+    </insert>
+
+    <update id="setDefault" >
+        UPDATE caregiver SET is_default = IF(caregiver_id=#{caregiverId},'1','0') WHERE sysuser_id=#{sysuserId}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from caregiver where caregiver_id=#{caregiverId}
+    </delete>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjx.nursing.mapper.NursingOrderDetailsMapper" >
+    <sql id="baseSql">
+        select order_details_id ,order_id ,order_code ,service_name ,
+               service_type ,service_desc ,service_number ,service_price ,
+               create_time ,product_quantity ,order_amount ,pay_amount ,paid_amount ,
+               service_start_time ,order_caregiver_name ,order_caregiver_age ,
+               order_caregiver_sex ,order_caregiver_addr ,service_city,
+               service_district,contact_person,contact_phone,service_place ,order_status
+        from nursing_order_details
+    </sql>
+    <insert id="insertNursingOrderDetails" useGeneratedKeys="true" keyProperty="orderDetailsId" parameterType="com.xjx.nursing.pojo.NursingOrderDetails" >
+    insert into nursing_order_details(order_id,order_code,service_name,service_type,
+                                      service_desc,service_number,service_price,create_time,product_quantity,
+                                      order_amount,pay_amount,paid_amount,service_start_time,order_caregiver_name,
+                                      order_caregiver_age,order_caregiver_sex,order_caregiver_addr,service_city,
+                                      service_district,contact_person,contact_phone,service_place,
+                                      order_status,sysuser_id)
+    values(#{orderId},#{orderCode},#{serviceName},#{serviceType},
+           #{serviceDesc},#{serviceNumber},#{servicePrice},#{createTime},#{productQuantity},
+           #{orderAmount},#{payAmount},#{paidAmount},#{serviceStartTime},#{orderCaregiverName},
+           #{orderCaregiverAge},#{orderCaregiverSex},#{orderCaregiverAddr},#{serviceCity},
+           #{serviceDistrict},#{contactPerson},#{contactPhone},#{servicePlace},
+           #{orderStatus},#{sysuserId})
+</insert>
+    <select id="oneNursingOrderDetails" resultType="com.xjx.nursing.pojo.NursingOrderDetails" parameterType="java.lang.Long">
+        <include refid="baseSql"></include>
+        where order_id=#{orderId}
+    </select>
+    <select id="getTotalCount" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(order_details_id) from nursing_order_details where sysuser_id=#{sysuerId}
+    </select>
+    <select id="listBySysuerId" resultType="com.xjx.nursing.pojo.NursingOrderDetails" parameterType="java.lang.Long">
+        <include refid="baseSql"></include>
+        where sysuser_id=#{sysuerId}
+    </select>
+</mapper>

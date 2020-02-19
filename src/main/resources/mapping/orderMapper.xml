@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjx.nursing.mapper.NursingOrderMapper" >
+    <resultMap id="resultMap" type="com.xjx.nursing.pojo.NursingOrder" >
+        <id property="orderId" column="order_id"/>
+    </resultMap>
+    <insert id="insertNursingOrder" useGeneratedKeys="true" keyProperty="orderId" parameterType="com.xjx.nursing.pojo.NursingOrder" >
+        insert into nursing_order(order_code,service_name,order_amount,pay_amount,order_status,sysuser_id)
+        values(#{orderCode},#{serviceName},#{orderAmount},#{payAmount},#{orderStatus},#{sysuserId})
+    </insert>
+    <select id="listNursringOrder" resultMap="resultMap" parameterType="java.lang.Long">
+        select order_id ,order_code ,service_name ,
+               create_time ,order_amount ,pay_amount ,
+               paid_amount ,order_status ,sysuser_id
+        from nursing_order
+        where sysuser_id = #{sysuserId}
+    </select>
+</mapper>

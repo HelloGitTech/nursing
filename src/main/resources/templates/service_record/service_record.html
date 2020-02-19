@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:float="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css"/>
+    <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/js1/service_record.js?v=1.4"></script>
+</head>
+<style>
+    .datagrid-btable{
+        width:100%;
+    }
+    .datagrid-header-inner{
+        width:100%;
+    }
+    .datagrid-header{
+        width:100%;
+    }
+    .datagrid-htable{
+        width:100%;
+    }
+    .datagrid-cell{margin:auto;}
+    .fitem{text-align:left}
+    .ftitle{text-align:center}
+</style>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <input type="hidden" th:value="${orderId}" id="orderId"/>
+    <!--<div data-options="region:'center',title:'护理列表'">-->
+        <table id="datagrid"  class="easyui-datagrid" style="width:100%;height:100%"
+               toolbar="#dgtoolbar" pagination="true"
+               pageSize="25"    pageList="[25,15,10]"
+               rownumbers="true" fitColumns="true" singleSelect="true" >
+            <thead>
+            <tr>
+                <th data-options="field:'workerName',align:'center',width:'9%'">护工姓名</th>
+                <th data-options="field:'workerSex',formatter:changeSexType,align:'center',width:'9%'">护工性别</th>
+                <th data-options="field:'workerAge',align:'center',width:'9%'">护工年龄</th>
+                <th data-options="field:'workerPhone',align:'center',width:'11%'">联系电话</th>
+                <th data-options="field:'startTime',align:'center',width:'11%'">开始时间</th>
+                <th data-options="field:'endTime',align:'center',width:'11%'">结束时间</th>
+            </tr>
+            </thead>
+        </table>
+        <div id="dgtoolbar">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newNursingService()">添加</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="removeNursingService()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="editNursingService()">修改</a>
+        </div>
+
+<!--    </div>-->
+</div>
+
+<div id="modifydg" class="easyui-dialog" style="width:550px;height:330px;padding:10px 20px"
+     closed="true" buttons="#modifydg-buttons">
+    <div class="ftitle">修改护理记录</div>
+    <form id="fim" method="post" >
+        <input type="hidden" th:value="${recordId}" name="recordId"/>
+        <div class="fitem">
+            <label>护工姓名:</label>
+            <input name="workerName"  class="easyui-validatebox" required="true" />
+            <a href="#" class="easyui-linkbutton" onclick="searchName('fim')">查询</a>
+        </div>
+        <div class="fitem">
+            <label>性别:</label>
+            <input type="radio" name="workerSex" value="1">男</input>
+            <input type="radio" name="workerSex" value="2">女</input>
+        </div>
+        <div class="fitem">
+            <label>年&nbsp;&nbsp;&nbsp;&nbsp;龄:</label>
+            <input name="workerAge" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>联系电话:</label>
+            <input name="workerPhone" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>开始时间:</label>
+            <input name="startTime" class="easyui-datetimebox" data-options="required:true,showSeconds:false" />
+        </div>
+        <div class="fitem">
+            <label>结束时间:</label>
+            <input name="endTime" class="easyui-datetimebox" data-options="required:true,showSeconds:false" />
+        </div>
+        <input type="hidden" name="_method" id="_method" value="PATCH"/>
+    </form>
+</div>
+<div id="modifydg-buttons">
+            <a href="#" class="easyui-linkbutton"  onclick="saveServiceRecord()">保存</a>
+            <a href="#" class="easyui-linkbutton"  onclick="javascript:$('#modifydg').dialog('close')">取消</a>
+</div>
+
+<div id="adddg" class="easyui-dialog" style="width:550px;height:330px;padding:10px 20px"
+     closed="true" buttons="#adddg-buttons">
+    <div class="ftitle">用户信息</div>
+    <form id="fam" method="post" >
+        <div class="fitem">
+            <label>护工姓名:</label>
+            <input name="workerName"  class="easyui-validatebox" required="true" />
+            <a href="#" class="easyui-linkbutton" onclick="searchName('fam')">查询</a>
+        </div>
+        <div class="fitem">
+            <label>性别:</label>
+            <input type="radio" name="workerSex" value="1">男</input>
+            <input type="radio" name="workerSex" value="2">女</input>
+        </div>
+        <div class="fitem">
+            <label>年&nbsp;&nbsp;&nbsp;&nbsp;龄:</label>
+            <input name="workerAge" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>联系电话:</label>
+            <input name="workerPhone" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>开始时间:</label>
+            <input name="startTime" class="easyui-datetimebox" data-options="required:true,showSeconds:false" />
+        </div>
+        <div class="fitem">
+            <label>结束时间:</label>
+            <input name="endTime" class="easyui-datetimebox" data-options="required:true,showSeconds:false" />
+        </div>
+
+    </form>
+</div>
+<div id="adddg-buttons">
+    <a href="#" class="easyui-linkbutton"  onclick="addServiceRecord()">添加</a>
+    <a href="#" class="easyui-linkbutton"  onclick="javascript:$('#adddg').dialog('close')">取消</a>
+</div>
+
+</body>
+</html>

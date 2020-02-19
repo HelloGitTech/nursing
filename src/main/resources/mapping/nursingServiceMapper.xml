@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjx.nursing.mapper.NursingServiceMapper" >
+    <select id="getNursingService" resultType="com.xjx.nursing.pojo.NursingService" parameterType="java.lang.Long" >
+        select service_id ,
+            service_name ,
+            service_type ,
+            service_desc ,
+            service_number ,
+            service_price ,
+            validity
+        from nursing_service
+        where service_id = #{serviceId}
+    </select>
+
+    <select id="getAllNursingService" resultType="com.xjx.nursing.pojo.NursingService" >
+        select service_id ,
+               service_name ,
+               service_type ,
+               service_desc ,
+               service_number ,
+               service_price ,
+               validity
+        from nursing_service
+    </select>
+
+    <select id="getTotalCount" resultType="java.lang.Integer" >
+        select count(service_id) from nursing_service
+    </select>
+
+    <update id="update" parameterType="com.xjx.nursing.pojo.NursingService">
+        update nursing_service
+        <set>
+            <if test="serviceName != null">
+                service_name = #{serviceName},
+            </if>
+            service_type = #{serviceType},
+            service_number = #{serviceNumber},
+            service_price = #{servicePrice}
+        </set>
+        where service_id = #{serviceId}
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from nursing_service where service_id = #{serviceId}
+    </delete>
+    <insert id="insert" parameterType="com.xjx.nursing.pojo.NursingService">
+        insert into nursing_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serviceName != null">
+                service_name,
+            </if>
+            <if test="serviceType != null">
+                service_type,
+            </if>
+            <if test="serviceNumber != 0">
+                service_number,
+            </if>
+            <if test="servicePrice != 0">
+                service_price,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serviceName != null">
+                #{serviceName},
+            </if>
+            <if test="serviceType != null">
+                #{serviceType},
+            </if>
+            <if test="serviceNumber != 0">
+                #{serviceNumber},
+            </if>
+            <if test="servicePrice != 0">
+                #{servicePrice},
+            </if>
+        </trim>
+    </insert>
+</mapper>

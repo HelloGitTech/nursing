@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xjx.nursing.mapper.NursingWorkerMapper" >
+    <sql id="sqlprefix">
+        select worker_id ,worker_name ,worker_sex ,
+               worker_age ,worker_native_place ,worker_status ,worker_scope,
+               worker_height,worker_weight,worker_blood_type,worker_education,worker_phone,
+               worker_constellation,worker_zodiac,worker_marriage,worker_service_num ,
+               worker_praise_rate,worker_self_introduce,worker_photo
+        from nursing_worker
+    </sql>
+
+    <select id="listNursingWorker" resultType="com.xjx.nursing.pojo.NursingWorker">
+        <include refid="sqlprefix"/>
+    </select>
+    <select id="searchNursingWorker" parameterType="java.lang.String" resultType="com.xjx.nursing.pojo.NursingWorker">
+        <include refid="sqlprefix"/>
+        <where>
+            <if test="workerName != null" >
+                <bind name="name" value="'%' + workerName + '%'"/>
+                worker_name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="oneNursingWorker" resultType="com.xjx.nursing.pojo.NursingWorker" parameterType="Long">
+        <include refid="sqlprefix"/>
+        where worker_id=#{workerId}
+    </select>
+
+    <select id="getTotalCount" resultType="java.lang.Integer" >
+        select count(worker_id) from nursing_worker
+    </select>
+    <insert id="insert" parameterType="com.xjx.nursing.pojo.NursingWorker">
+        insert into nursing_worker
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workerName != null">
+                worker_name,
+            </if>
+            <if test="workerSex != null">
+                worker_sex,
+            </if>
+            <if test="workerAge != 0">
+                worker_age,
+            </if>
+            <if test="workerWeight != 0">
+                worker_weight,
+            </if>
+            <if test="workerHeight != 0">
+                worker_height,
+            </if>
+            <if test="workerBloodType != null">
+                worker_blood_type,
+            </if>
+            <if test="workerEducation != null">
+                worker_education,
+            </if>
+            <if test="workerPhone != null">
+                worker_phone,
+            </if>
+            <if test="workerConstellation != null">
+                worker_constellation,
+            </if>
+            <if test="workerZodiac != null">
+                worker_zodiac,
+            </if>
+            <if test="workerMarriage != null">
+                worker_marriage,
+            </if>
+            <if test="workerNativePlace != null">
+                worker_native_place,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workerName != null">
+                #{workerName},
+            </if>
+            <if test="workerSex != null">
+                #{workerSex},
+            </if>
+            <if test="workerAge != 0">
+                #{workerAge},
+            </if>
+            <if test="workerWeight != 0">
+                #{workerWeight},
+            </if>
+            <if test="workerHeight != 0">
+                #{workerHeight},
+            </if>
+            <if test="workerBloodType != null">
+                #{workerBloodType},
+            </if>
+            <if test="workerEducation != null">
+                #{workerEducation},
+            </if>
+            <if test="workerPhone != null">
+                #{workerPhone},
+            </if>
+            <if test="workerConstellation != null">
+                #{workerConstellation},
+            </if>
+            <if test="workerZodiac != null">
+                #{workerZodiac},
+            </if>
+            <if test="workerMarriage != null">
+                #{workerMarriage},
+            </if>
+            <if test="workerNativePlace != null">
+                #{workerNativePlace},
+            </if>
+        </trim>
+
+    </insert>
+    <update id="update" parameterType="com.xjx.nursing.pojo.NursingWorker">
+        update nursing_worker
+        <set>
+            <if test="workerName != null">
+            worker_name = #{workerName},
+            </if>
+            <if test="workerSex != null">
+                worker_sex = #{workerSex},
+            </if>
+            <if test="workerAge != null">
+                worker_age = #{workerAge},
+            </if>
+            <if test="workerHeight != null">
+                worker_height = #{workerHeight},
+            </if>
+            <if test="workerWeight != null">
+                worker_weight = #{workerWeight},
+            </if>
+            <if test="workerBloodType != null">
+                worker_blood_type = #{workerBloodType},
+            </if>
+            <if test="workerEducation != null">
+                worker_education = #{workerEducation},
+            </if>
+            <if test="workerPhone != null">
+                worker_phone = #{workerPhone},
+            </if>
+            <if test="workerConstellation != null">
+                worker_constellation = #{workerConstellation},
+            </if>
+            <if test="workerZodiac != null">
+                worker_zodiac = #{workerZodiac},
+            </if>
+            <if test="workerMarriage != null">
+                worker_marriage = #{workerMarriage},
+            </if>
+            <if test="workerNativePlace != null">
+                worker_native_place = #{workerNativePlace},
+            </if>
+            <if test="workerStatus != null">
+                worker_status = #{workerStatus},
+            </if>
+            <if test="workerSelfIntroduce != null">
+                worker_self_introduce = #{workerSelfIntroduce},
+            </if>
+        </set>
+        where worker_id = #{workerId}
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from nursing_worker where worker_id = #{workerId}
+    </delete>
+</mapper>
