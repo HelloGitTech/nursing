@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(basePackages = "com.xjx.nursing.mapper")
 public class NursingApp {
     public static void main(String[] args){
-        //aaa
         SpringApplication.run(NursingApp.class,args);
     }
 }
